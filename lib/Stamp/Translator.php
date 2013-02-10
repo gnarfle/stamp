@@ -13,15 +13,15 @@ class Translator
     'ACDT', 'ACST', 'ACT', 'ADT', 'AEDT', 'AEST', 'AFT', 'AKDT', 'AKST',
     'AMST', 'AMT', 'ART', 'AST', 'AWDT', 'AWST', 'AZOST', 'AZT', 'BDT',
     'BIOT', 'BIT', 'BOT', 'BRT', 'BST', 'BTTCAT', 'CCT', 'CDT', 'CEDT',
-    'CEST', 'CET', 'CHADT', 'CHAST', 'CHOT', 'ChST', 'CHUT', 'CIST', 
-    'CIT', 'CKT', 'CLST', 'CLT', 'COST', 'COT', 'CST', 'CT', 'CVT', 
+    'CEST', 'CET', 'CHADT', 'CHAST', 'CHOT', 'ChST', 'CHUT', 'CIST',
+    'CIT', 'CKT', 'CLST', 'CLT', 'COST', 'COT', 'CST', 'CT', 'CVT',
     'CWST', 'CXT', 'DAVT', 'DDUT', 'DFT', 'EASST', 'EAST', 'EAT', 'ECT',
     'EDT', 'EEDT', 'EEST', 'EET', 'EGST', 'EGT', 'EIT', 'EST', 'FET',
     'FJT', 'FKST', 'FKT', 'FNT', 'GALT', 'GAMT', 'GET', 'GFT', 'GILT',
     'GIT', 'GMT', 'GST', 'GYT', 'HADT', 'HAEC', 'HAST', 'HKT', 'HMT',
     'HOVT', 'HST', 'ICT', 'IDT', 'IOT', 'IRDT', 'IRKT', 'IRST', 'IST',
     'JST', 'KGT', 'KOST', 'KRAT', 'KST', 'LHST', 'LINT', 'MAGT', 'MART',
-    'MAWT', 'MDT', 'MET', 'MEST', 'MHT', 'MIST', 'MIT', 'MMT', 'MSK', 
+    'MAWT', 'MDT', 'MET', 'MEST', 'MHT', 'MIST', 'MIT', 'MMT', 'MSK',
     'MST', 'MUT', 'MVT', 'MYT', 'NCT', 'NDT', 'NFT', 'NPT', 'NST', 'NT',
     'NUT', 'NZDT', 'NZST', 'OMST', 'ORAT', 'PDT', 'PET', 'PETT', 'PGT',
     'PHOT', 'PHT', 'PKT', 'PMDT', 'PMST', 'PONT', 'PST', 'RET', 'ROTT',
@@ -33,7 +33,7 @@ class Translator
   );
 
   private $MONTH_NAMES = array(
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 
+    'January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'Dec'
   );
 
@@ -61,7 +61,8 @@ class Translator
   private $one_digit_regexp;
   protected $time_regexp;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->timezone_regexp = '/^(' . implode('|', $this->TIME_ZONE_ABBREVIATIONS) . ')$/';
     $this->monthnames_regexp = '/^(' . implode('|', $this->MONTH_NAMES) . ')$/i';
     $this->abbr_monthnames_regexp = '/^(' . implode('|', $this->MONTH_ABBRV) . ')$/i';
@@ -121,7 +122,7 @@ class Translator
   public function translate($example, $time)
   {
     $parts = preg_split($this->time_regexp, $example);
-    
+
     if ( count($parts) == 1 ) {
       $before = $parts[0];
       $after = false;
@@ -129,66 +130,75 @@ class Translator
     } else {
       $before = $parts[0];
       $after = $parts[1];
-      preg_match($this->time_regexp, $example, $matches);
-      $time_example = $matches[0];      
+      preg_match($this->time_regexp, $example, $time_matches);
     }
-    $date_parts = preg_split('/\b/', $before, -1, PREG_SPLIT_NO_EMPTY);
+
     $emitters = new Emitters\Composite();
     $previous = false;
 
-    foreach( $date_parts as $token )
-    {
+    // handle our before date parts
+    $date_parts = preg_split('/\b/', $before, -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($date_parts as $token) {
       $val = $emitters->add($this->date_emitter($token, $previous));
-      if ( $val ) {
+      if ($val && $val->field != 'string') {
         $previous = $val;
       }
     }
 
+    // now deal with time bits
+    $previous = false;
+    if ($time_matches) {
+      array_shift($time_matches); // first match is whole string
+      foreach ($time_matches as $token) {
+        $val = $emitters->add($this->time_emitter($token, $previous));
+        if ($val && $val->field != 'string')
+        {
+          $previous = $val;
+        }
+      }
+    }
+
+    // now handle our after time bits if needed
     return $emitters->format($time);
   }
 
-  private function date_emitter($token, $previous)
+  public function date_emitter($token, $previous)
   {
-    if (preg_match($this->monthnames_regexp, $token))
-    {
+    if (preg_match($this->monthnames_regexp, $token)) {
       return new Emitters\Lookup("F");
-    }
-    else if (preg_match($this->abbr_monthnames_regexp, $token))
-    {
+    } elseif (preg_match($this->abbr_monthnames_regexp, $token)) {
       return new Emitters\Lookup("M");
-    }
-    else if (preg_match($this->daynames_regexp, $token))
-    {
+    } elseif (preg_match($this->daynames_regexp, $token)) {
       return new Emitters\Lookup("l");
-    }
-    else if (preg_match($this->abbr_daynames_regexp, $token))
-    {
+    } elseif (preg_match($this->abbr_daynames_regexp, $token)) {
       return new Emitters\Lookup("D");
-    }
-    else if (preg_match($this->timezone_regexp, $token))
-    {
+    } elseif (preg_match($this->timezone_regexp, $token)) {
       return new Emitters\Lookup("T");
-    }
-    else if (preg_match($this->four_digit_regexp, $token))
-    {
+    } elseif (preg_match($this->four_digit_regexp, $token)) {
       return new Emitters\Lookup("Y");
-    }
-    else if (preg_match($this->ordinal_day_regexp, $token))
-    {
+    } elseif (preg_match($this->ordinal_day_regexp, $token)) {
       return new Emitters\Ordinal($token);
-    }
-    else if (preg_match($this->two_digit_regexp, $token))
-    {
-      $value = intval($token);
-      return new Emitters\TwoDigitDate($value, $previous);
-    }
-    else if (preg_match($this->one_digit_regexp, $token))
-    {
+    } elseif (preg_match($this->two_digit_regexp, $token)) {
+      return new Emitters\TwoDigitDate($token, $previous);
+    } elseif (preg_match($this->one_digit_regexp, $token)) {
       return new Emitters\Lookup("j");
-    }
-    else
-    {
+    } else {
       return new Emitters\String($token);
-    }    
+    }
+  }
+
+  private function time_emitter($token, $previous)
+  {
+    if ( preg_match('/^(a|p)m$/', $token) ) {
+      return new Emitters\AmPm();
+    } elseif ( preg_match('/^(A|P)M$/', $token)) {
+      return new Emitters\AmPm('uppercase');
+    } elseif ( preg_match($this->two_digit_regexp, $token)) {
+      return new Emitters\TwoDigitTime($token, $previous);
+    } elseif (preg_match($this->one_digit_regexp, $token)) {
+      return new Emitters\Lookup("g");
+    } else {
+      return new Emitters\String($token);
+    }
   }
 }

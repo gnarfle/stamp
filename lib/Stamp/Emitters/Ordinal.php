@@ -10,12 +10,12 @@ class Ordinal
   private $value;
   public $field = 'day';
 
-  function __construct($value)
+  public function __construct($value)
   {
     $this->value = $value;
   }
 
-  function format($time)
+  public function format($time)
   {
     return $this->ordinalize($time);
   }
@@ -26,14 +26,14 @@ class Ordinal
     $day = date("j", $time);
     $val = intval($day);
 
-    if ( $val % 100 >= 11 && $val % 100 <= 13 ) {
+    if ($val % 100 >= 11 && $val % 100 <= 13) {
       $ordinal = 'th';
     } else {
-      switch( $val % 10 ) {
+      switch ($val % 10) {
         case 1:
           $ordinal = 'st';
           break;
-        case 2: 
+        case 2:
           $ordinal = 'nd';
           break;
         case 3:
@@ -43,6 +43,7 @@ class Ordinal
           $ordinal = 'th';
       }
     }
+
     return $day . $ordinal;
   }
 }

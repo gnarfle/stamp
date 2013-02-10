@@ -10,10 +10,10 @@ class Lookup
   private $format;
   public $field;
 
-  function __construct($format)
+  public function __construct($format)
   {
     $this->format = $format;
-    switch( $format ) {
+    switch ($format) {
       case 'F':
       case 'M':
         $this->field = 'month';
@@ -32,7 +32,7 @@ class Lookup
     }
   }
 
-  function format($time)
+  public function format($time)
   {
     return date($this->format, $time);
   }

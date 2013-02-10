@@ -8,14 +8,14 @@ namespace Stamp\Emitters;
 class String
 {
   private $format;
-  public $field = false;
+  public $field = 'string';
 
-  function __construct($format)
+  public function __construct($format)
   {
     $this->format = $format;
   }
 
-  function format($time)
+  public function format($time)
   {
     return $this->format;
   }

@@ -7,29 +7,23 @@ class Composite
   private $emitters = array();
   private $time;
 
-  function format($time)
+  public function format($time)
   {
     $result = '';
-    foreach($this->emitters as $emitter) {
+    foreach ($this->emitters as $emitter) {
       $result .= $emitter->format($time);
     }
 
     return $result;
   }
 
-  function add($emitter)
+  public function add($emitter)
   {
-    // if ( is_array($emitter))
-    // {
-    //   foreach($emitter as $e)
-    //   {
-    //     $this->emitters[] = $e;
-    //   }
-    // }
-    // else
-    // {
+    if ($emitter)
+    {
       $this->emitters[] = $emitter;
-      return $emitter->field;
+      return $emitter;
+    }
     // }
   }
 }

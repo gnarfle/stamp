@@ -12,32 +12,25 @@ class TwoDigitDate
   private $time;
   public $field;
 
-  function __construct($value, $previous)
+  public function __construct($value, $previous)
   {
-    $this->value = $value;
+    $this->value = intval($value);
     $this->previous = $previous;
   }
 
-  function format($time)
+  public function format($time)
   {
     // do some magic and determine if we are lookign for month, date or year
-    if ( $this->value >= 60 && $this->value <= 99 )
-    {
+    if ($this->value >= 60 && $this->value <= 99) {
       return $this->formatYear($time);
-    }
-    elseif ( $this->value == 12 )
-    {
+    } elseif ($this->value == 12) {
       return $this->formatMonth($time);
-    }
-    elseif ($this->value >= 13 && $this->value <= 31)
-    {
+    } elseif ($this->value >= 13 && $this->value <= 31) {
       return $this->formatDay($time);
-    }
-    else
-    {
+    } else {
       // see if we can figure it out by context
-      if ( $this->previous ) {
-        switch( $this->previous ) {
+      if ($this->previous) {
+        switch ($this->previous->field) {
           case 'month':
             return $this->formatDay($time);
           case 'day':
@@ -54,18 +47,21 @@ class TwoDigitDate
   private function formatYear($time)
   {
     $this->field = 'year';
+
     return date("Y", $time);
   }
 
   private function formatDay($time)
   {
     $this->field = 'day';
+
     return date("d", $time);
   }
 
   private function formatMonth($time)
   {
     $this->field = 'month';
+
     return date("m", $time);
   }
 }
