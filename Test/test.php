@@ -8,4 +8,4 @@ $examples = array(
 
 );
 
-echo $stamp->stamp("August 03 2011 PST 12:14PM", time());
+echo $stamp->stamp("Sat August 03 2011 PST 12:14PM", time());
