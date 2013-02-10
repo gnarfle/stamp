@@ -26,7 +26,6 @@ Usage is simple:
 $stamp = new Stamp\Stamp();
 $stamp->stamp("August 14th 2012", time()); // February 9th 2013
 $stamp->stamp("04/23/2012 @ 4:13PM (Saturday)", time()) // 02/09/2013 @ 10:50AM (Sunday)
-=> February 9th 2013
 ```
 
 
