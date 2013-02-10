@@ -44,4 +44,20 @@ class StampTest extends PHPUnit_Framework_TestCase
       $this->assertEquals($expected, $output);
     }
   }
+
+  public function testOrdinals() {
+
+  }
+
+  public function testTimes() {
+
+  }
+
+  public function testDateTime() {
+
+  }
+
+  public function testInputs() {
+    
+  }
 }
