@@ -74,50 +74,6 @@ class Translator
     $this->one_digit_regexp = '/^\d{1}$/';
     $this->time_regexp = '/(\d{1,2})(:)(\d{2})(\s*)(:)?(\d{2})?(\s*)?([ap]m)?/i';
   }
-  // const TIMEZONE_REGEXP = '/^(' . implode('|', $TIME_ZONE_ABBREVIATIONS) . ')$/';
-  // const MONTHNAMES_REGEXP = '/^(' . implode('|', $MONTH_NAMES) . ')$/i';
-  // const ABBR_MONTHNAMES_REGEXP = '/^(' . implode('|', $MONTH_ABBRV) . ')$/i';
-  // const DAYNAMES_REGEXP = '/^(' . implode('|', $DAY_NAMES) . ')$/i';
-  // const ABBR_DAYNAMES_REGEXP = '/^(' . implode('|', $DAY_ABBRV) . ')$/i';
-
-  // const ONE_DIGIT_REGEXP       = '/^\d{1}$/';
-  // const TWO_DIGIT_REGEXP       = '/^\d{2}$/';
-  // const FOUR_DIGIT_REGEXP      = '/^\d{4}$/';
-
-  // const TIME_REGEXP            = '/(\d{1,2})(:)(\d{2})(\s*)(:)?(\d{2})?(\s*)?([ap]m)?/i';
-
-  // const MERIDIAN_LOWER_REGEXP  = '/^(a|p)m$/';
-  // const MERIDIAN_UPPER_REGEXP  = '/^(A|P)M$/';
-
-  // const ORDINAL_DAY_REGEXP     = '/^(\d{1,2})(st|nd|rd|th)$/';
-
-  // # Disambiguate based on value
-  // const OBVIOUS_YEARS          = 60..99
-  // const OBVIOUS_MONTHS         = 12
-  // const OBVIOUS_DAYS           = 13..31
-  // const OBVIOUS_24_HOUR        = 13..23
-
-    // TWO_DIGIT_YEAR_EMITTER  = Emitters::TwoDigit.new(:year) { |year| year % 100 }
-    // TWO_DIGIT_MONTH_EMITTER = Emitters::TwoDigit.new(:month)
-    // TWO_DIGIT_DAY_EMITTER   = Emitters::TwoDigit.new(:day)
-    // HOUR_TO_12_HOUR         = lambda { |h| ((h - 1) % 12) + 1 }
-
-    // OBVIOUS_DATE_MAP = {
-    //   OBVIOUS_YEARS  => TWO_DIGIT_YEAR_EMITTER,
-    //   OBVIOUS_MONTHS => TWO_DIGIT_MONTH_EMITTER,
-    //   OBVIOUS_DAYS   => TWO_DIGIT_DAY_EMITTER
-    // }
-
-    // TWO_DIGIT_DATE_SUCCESSION = {
-    //   :month => TWO_DIGIT_DAY_EMITTER,
-    //   :day   => TWO_DIGIT_YEAR_EMITTER,
-    //   :year  => TWO_DIGIT_MONTH_EMITTER
-    // }
-
-    // TWO_DIGIT_TIME_SUCCESSION = {
-    //   :hour => Emitters::TwoDigit.new(:min),
-    //   :min  => Emitters::TwoDigit.new(:sec)
-    // }
 
   public function translate($example, $time)
   {
@@ -126,7 +82,7 @@ class Translator
     if ( count($parts) == 1 ) {
       $before = $parts[0];
       $after = false;
-      $time_example = false;
+      $time_matches = false;
     } else {
       $before = $parts[0];
       $after = $parts[1];

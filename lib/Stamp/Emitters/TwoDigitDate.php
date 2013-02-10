@@ -23,7 +23,7 @@ class TwoDigitDate
     // do some magic and determine if we are lookign for month, date or year
     if ($this->value >= 60 && $this->value <= 99) {
       return $this->formatYear($time);
-    } elseif ($this->value == 12) {
+    } elseif ($this->value == 12 && $this->previous && $this->previous->field != 'month') {
       return $this->formatMonth($time);
     } elseif ($this->value >= 13 && $this->value <= 31) {
       return $this->formatDay($time);
@@ -48,7 +48,7 @@ class TwoDigitDate
   {
     $this->field = 'year';
 
-    return date("Y", $time);
+    return date("y", $time);
   }
 
   private function formatDay($time)
