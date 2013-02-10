@@ -159,6 +159,17 @@ class Translator
     }
 
     // now handle our after time bits if needed
+    $previous = false;
+    if ( $after ) {
+      $date_parts = preg_split('/\b/', $after, -1, PREG_SPLIT_NO_EMPTY);
+      foreach ($date_parts as $token) {
+        $val = $emitters->add($this->date_emitter($token, $previous));
+        if ($val && $val->field != 'string') {
+          $previous = $val;
+        }
+      } 
+    }
+
     return $emitters->format($time);
   }
 

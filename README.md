@@ -10,12 +10,10 @@ Not ready for primetime. This is an intial rough port.
 
 ## TODO
 
-* Implement time parsing
-* Implement more intelligent two digit date parsing
-* Implement tests
-* allow passing date strings, date objects, or timestamps
+* Testing
 * Adhere to PSR standards
-* Performance analysis
+* Performance analysis / cache emitters
+* Internationalisation? 
 
 ## Usage
 
@@ -24,10 +22,22 @@ Usage is simple:
 
 ```php
 $stamp = new Stamp\Stamp();
-$stamp->stamp("August 14th 2012", time());
+$stamp->stamp("August 14th 2012", time()); // February 9th 2013
+$stamp->stamp("04/23/2012 @ 4:13PM (Saturday)", time()) // 02/09/2013 @ 10:50AM (Sunday)
 => February 9th 2013
 ```
 
-The first argument is an example string used to build a date format. At this point I have
-not yet implemented intelligent 2 digit date parsing, so for best results try to use 
-values that are not ambiguous. This should improve shortly... 
+
+## Limitations
+
+There are some instances where it will be difficult to guess what your example really means,
+so it is best to supply example strings that are not ambiguous. For example the following 
+example will fail if you intend it to be mm/dd/yyyy:
+
+```php
+$stamp->stamp("4/4/2012", time());
+```
+
+The reason for this is that the information provided makes it impossible to distinguish between m/d/y
+or d/y/m since both single digit values are valid for both month or day. To avoid this it is best to
+supply example days > 12 and example months < 12.

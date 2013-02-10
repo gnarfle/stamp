@@ -29,6 +29,8 @@ class Lookup
       case 'T':
         $this->field = 'tz';
         break;
+      case 'g':
+        $this->field = 'hour';
     }
   }
 
