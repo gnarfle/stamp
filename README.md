@@ -6,7 +6,9 @@ pass to date().
 
 ## Status
 
-Not ready for primetime. This is an intial rough port. 
+It mostly works, but needs a thorough test suite. It also needs code cleanup and
+performance enhancements. In other words, functional but the code status is a bit
+rough.
 
 ## TODO
 
