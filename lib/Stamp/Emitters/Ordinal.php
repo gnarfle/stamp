@@ -8,6 +8,7 @@ namespace Stamp\Emitters;
 class Ordinal
 {
   private $value;
+  public $field = 'day';
 
   function __construct($value)
   {

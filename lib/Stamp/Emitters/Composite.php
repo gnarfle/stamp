@@ -19,16 +19,17 @@ class Composite
 
   function add($emitter)
   {
-    if ( is_array($emitter))
-    {
-      foreach($emitter as $e)
-      {
-        $this->emitters[] = $e;
-      }
-    }
-    else
-    {
+    // if ( is_array($emitter))
+    // {
+    //   foreach($emitter as $e)
+    //   {
+    //     $this->emitters[] = $e;
+    //   }
+    // }
+    // else
+    // {
       $this->emitters[] = $emitter;
-    }
+      return $emitter->field;
+    // }
   }
 }

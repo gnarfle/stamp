@@ -8,6 +8,7 @@ namespace Stamp\Emitters;
 class String
 {
   private $format;
+  public $field = false;
 
   function __construct($format)
   {

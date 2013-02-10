@@ -138,8 +138,10 @@ class Translator
 
     foreach( $date_parts as $token )
     {
-      $emitters->add($this->date_emitter($token, $previous));
-      $previous = $token;
+      $val = $emitters->add($this->date_emitter($token, $previous));
+      if ( $val ) {
+        $previous = $val;
+      }
     }
 
     return $emitters->format($time);
