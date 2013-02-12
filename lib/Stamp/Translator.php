@@ -95,7 +95,7 @@ class Translator
     // handle our before date parts
     $date_parts = preg_split('/\b/', $before, -1, PREG_SPLIT_NO_EMPTY);
     foreach ($date_parts as $token) {
-      $val = $emitters->add($this->date_emitter($token, $previous));
+      $val = $emitters->add($this->dateEmitter($token, $previous));
       if ($val && $val->field != 'string') {
         $previous = $val;
       }
@@ -106,7 +106,7 @@ class Translator
     if ($time_matches) {
       array_shift($time_matches); // first match is whole string
       foreach ($time_matches as $token) {
-        $val = $emitters->add($this->time_emitter($token, $previous));
+        $val = $emitters->add($this->timeEmitter($token, $previous));
         if ($val && $val->field != 'string')
         {
           $previous = $val;
@@ -119,7 +119,7 @@ class Translator
     if ( $after ) {
       $date_parts = preg_split('/\b/', $after, -1, PREG_SPLIT_NO_EMPTY);
       foreach ($date_parts as $token) {
-        $val = $emitters->add($this->date_emitter($token, $previous));
+        $val = $emitters->add($this->dateEmitter($token, $previous));
         if ($val && $val->field != 'string') {
           $previous = $val;
         }
@@ -129,7 +129,7 @@ class Translator
     return $emitters->format($time);
   }
 
-  public function date_emitter($token, $previous)
+  public function dateEmitter($token, $previous)
   {
     if (preg_match($this->monthnames_regexp, $token)) {
       return new Emitters\Lookup("F");
@@ -154,7 +154,7 @@ class Translator
     }
   }
 
-  private function time_emitter($token, $previous)
+  private function timeEmitter($token, $previous)
   {
     if ( preg_match('/^(a|p)m$/', $token) ) {
       return new Emitters\AmPm();
