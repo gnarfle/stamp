@@ -35,10 +35,11 @@ class Stamp
 
   private function fetchTranslator($example) {
     if ( isset( $this->cache[$example] ) ) {
-      echo 'cache hit';
       return $this->cache[$example];
     }
 
-    return new Translator( $example );
+    $translator = new Translator( $example );
+    $this->cache[$example] = $translator;
+    return $translator;
   }
 }
