@@ -6,14 +6,30 @@ pass to date().
 
 ## Status
 
-Stamp should be fully functional, it passes all the tests that it's ruby cousin does.
-That said there is a bit of code cleanup and performance enhancements that need to be done
-but it should be very usable right now.
+Stamp should be fully functional, it passes all the tests that it's ruby
+cousin does. 
+
+## Performance
+
+Stamp works by parsing the example string and building up an array of
+formatting objects for each part of the example. This obviously involves
+creating multiple objects and is thus a heavier solution than just using
+php's date() function. But, as with most development tools, the tradeoff
+for slightly decreased performance is easier development.
+
+To help with performance, the parser is cached per example string. You
+should only create one Stamp object per view/page and reuse it for each
+date format. Stamp will cache each example string parser so that if you
+loop through a set of dates and format each using the same example,
+the example will only be parsed once. 
+
+On my MacBook Pro stamp can format 10,000 different dates (using
+different example strings) in about 0.75 seconds and can format 10,000
+different dates (using the same example string) in about 0.2 seconds.
 
 ## TODO
 
 * Adhere to PSR-2 standards
-* Performance analysis / cache emitters
 * Internationalisation? 
 
 ## Usage
