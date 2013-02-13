@@ -6,20 +6,20 @@ pass to date().
 
 ## Status
 
-It mostly works, but needs a thorough test suite. It also needs code cleanup and
-performance enhancements. In other words, functional but the code status is a bit
-rough.
+Stamp should be fully functional, it passes all the tests that it's ruby cousin does.
+That said there is a bit of code cleanup and performance enhancements that need to be done
+but it should be very usable right now.
 
 ## TODO
 
-* Testing
-* Adhere to PSR standards
+* Adhere to PSR-2 standards
 * Performance analysis / cache emitters
 * Internationalisation? 
 
 ## Usage
 
-Stamp can be loaded using the Composer autoloder or an autoloader of your choice.
+Stamp can be loaded using the Composer autoloader or an autoloader of your choice.
+
 Usage is simple:
 
 ```php
@@ -28,7 +28,7 @@ $stamp->stamp("August 14th 2012", time()); // February 9th 2013
 $stamp->stamp("04/23/2012 @ 4:13PM (Saturday)", time()) // 02/09/2013 @ 10:50AM (Sunday)
 ```
 
-For a more complete list of examples, check out the [Test Suite](https://github.com/chadcf/stamp/blob/master/Test/StampTest.php)
+For a more complete list of examples, check out the [Test Suite](https://github.com/chadcf/stamp/blob/master/features/stamp.feature)
 
 ## Limitations
 
