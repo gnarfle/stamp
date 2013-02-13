@@ -4,9 +4,12 @@ namespace Stamp;
 
 class Stamp
 {
+  private $cache = array();
+
   public function stamp($example, $time)
   {
-    $translator = new Translator();
+
+    $translator = $this->fetchTranslator( $example );
 
     // what is our argument?
     if ( !is_numeric($time) )
@@ -24,6 +27,18 @@ class Stamp
         throw new Exception('Invalid date');
       }
     }
-    return $translator->translate($example, $time);
+
+
+
+    return $translator->translate($time);
+  }
+
+  private function fetchTranslator($example) {
+    if ( isset( $this->cache[$example] ) ) {
+      echo 'cache hit';
+      return $this->cache[$example];
+    }
+
+    return new Translator( $example );
   }
 }

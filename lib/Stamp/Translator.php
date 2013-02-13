@@ -50,6 +50,8 @@ class Translator
     'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'
   );
 
+  private $example;
+  private $emitters;
   private $timezone_regexp;
   private $monthnames_regexp;
   private $abbr_monthnames_regexp;
@@ -61,8 +63,11 @@ class Translator
   private $one_digit_regexp;
   protected $time_regexp;
 
-  public function __construct()
+  public function __construct( $example )
   {
+    $this->example = $example;
+
+    // TODO: make this staticier for less overhead
     $this->timezone_regexp = '/^(' . implode('|', $this->TIME_ZONE_ABBREVIATIONS) . ')$/';
     $this->monthnames_regexp = '/^(' . implode('|', $this->MONTH_NAMES) . ')$/i';
     $this->abbr_monthnames_regexp = '/^(' . implode('|', $this->MONTH_ABBRV) . ')$/i';
@@ -73,11 +78,13 @@ class Translator
     $this->ordinal_day_regexp = '/^(\d{1,2})(st|nd|rd|th)$/';
     $this->one_digit_regexp = '/^\d{1}$/';
     $this->time_regexp = '/(\d{1,2})(:)(\d{2})(\s*)(:)?(\d{2})?(\s*)?([ap]m)?/i';
+
+    $this->emitters = new Emitters\Composite();
+    $this->buildEmitters();
   }
 
-  public function translate($example, $time)
-  {
-    $parts = preg_split($this->time_regexp, $example);
+  private function buildEmitters() {
+    $parts = preg_split($this->time_regexp, $this->example);
 
     if ( count($parts) == 1 ) {
       $before = $parts[0];
@@ -86,16 +93,15 @@ class Translator
     } else {
       $before = $parts[0];
       $after = $parts[1];
-      preg_match($this->time_regexp, $example, $time_matches);
+      preg_match($this->time_regexp, $this->example, $time_matches);
     }
 
-    $emitters = new Emitters\Composite();
     $previous = false;
 
     // handle our before date parts
     $date_parts = preg_split('/\b/', $before, -1, PREG_SPLIT_NO_EMPTY);
     foreach ($date_parts as $token) {
-      $val = $emitters->add($this->dateEmitter($token, $previous));
+      $val = $this->emitters->add($this->dateEmitter($token, $previous));
       if ($val && $val->field != 'string') {
         $previous = $val;
       }
@@ -106,7 +112,7 @@ class Translator
     if ($time_matches) {
       array_shift($time_matches); // first match is whole string
       foreach ($time_matches as $token) {
-        $val = $emitters->add($this->timeEmitter($token, $previous));
+        $val = $this->emitters->add($this->timeEmitter($token, $previous));
         if ($val && $val->field != 'string')
         {
           $previous = $val;
@@ -119,14 +125,17 @@ class Translator
     if ( $after ) {
       $date_parts = preg_split('/\b/', $after, -1, PREG_SPLIT_NO_EMPTY);
       foreach ($date_parts as $token) {
-        $val = $emitters->add($this->dateEmitter($token, $previous));
+        $val = $this->emitters->add($this->dateEmitter($token, $previous));
         if ($val && $val->field != 'string') {
           $previous = $val;
         }
       } 
     }
+  }
 
-    return $emitters->format($time);
+  public function translate($time)
+  {
+    return $this->emitters->format($time);
   }
 
   public function dateEmitter($token, $previous)
