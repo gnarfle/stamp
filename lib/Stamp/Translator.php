@@ -34,7 +34,7 @@ class Translator
 
   private $MONTH_NAMES = array(
     'January', 'February', 'March', 'April', 'May', 'June', 'July',
-    'August', 'September', 'October', 'November', 'Dec'
+    'August', 'September', 'October', 'November', 'December'
   );
 
   private $MONTH_ABBRV = array(
@@ -131,7 +131,7 @@ class Translator
 
   public function dateEmitter($token, $previous)
   {
-    if (preg_match($this->monthnames_regexp, $token)) {
+    if (preg_match($this->monthnames_regexp, $token) === 1) {
       return new Emitters\Lookup("F");
     } elseif (preg_match($this->abbr_monthnames_regexp, $token)) {
       return new Emitters\Lookup("M");
