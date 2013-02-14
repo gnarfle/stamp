@@ -54,7 +54,7 @@ so it is best to supply example strings that are not ambiguous. For example the 
 example will fail if you intend it to be mm/dd/yyyy:
 
 ```php
-$stamp->stamp("4/4/2012", time());
+$stamp->stamp("4/5/2012", time());
 ```
 
 The reason for this is that the information provided makes it impossible to distinguish between m/d/y
