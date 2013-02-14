@@ -63,6 +63,9 @@ class Translator
     private $one_digit_regexp;
     protected $time_regexp;
 
+    /**
+     * @param $example
+     */
     public function __construct($example)
     {
         $this->example = $example;
@@ -83,6 +86,9 @@ class Translator
         $this->buildEmitters();
     }
 
+    /**
+     *
+     */
     private function buildEmitters()
     {
         $parts = preg_split($this->time_regexp, $this->example);
@@ -133,11 +139,20 @@ class Translator
         }
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function translate($time)
     {
         return $this->emitters->format($time);
     }
 
+    /**
+     * @param $token
+     * @param $previous
+     * @return Emitters\Lookup|Emitters\Ordinal|Emitters\String|Emitters\TwoDigitDate
+     */
     public function dateEmitter($token, $previous)
     {
         if (preg_match($this->monthnames_regexp, $token) === 1) {
@@ -163,6 +178,11 @@ class Translator
         }
     }
 
+    /**
+     * @param $token
+     * @param $previous
+     * @return Emitters\AmPm|Emitters\Lookup|Emitters\String|Emitters\TwoDigitTime
+     */
     private function timeEmitter($token, $previous)
     {
         if (preg_match('/^(a|p)m$/', $token)) {

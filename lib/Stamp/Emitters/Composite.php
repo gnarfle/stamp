@@ -2,14 +2,27 @@
 
 namespace Stamp\Emitters;
 
-class Composite
+class Composite extends BaseEmitter implements IBaseEmitter
 {
+    /**
+     * @var array
+     */
     private $emitters = array();
-    private $time;
 
+    public function __construct()
+    {
+
+    }
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
         $result = '';
+        /**
+         * @var BaseEmitter $emitter
+         */
         foreach ($this->emitters as $emitter) {
             $result .= $emitter->format($time);
         }
@@ -17,6 +30,11 @@ class Composite
         return $result;
     }
 
+    /**
+     * @param $emitter
+     * @return mixed
+     * @todo fix no return on not array
+     */
     public function add($emitter)
     {
         if ($emitter) {

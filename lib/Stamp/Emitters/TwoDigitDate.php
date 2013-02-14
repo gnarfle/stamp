@@ -5,22 +5,29 @@
 
 namespace Stamp\Emitters;
 
-class TwoDigitDate
+class TwoDigitDate extends BaseEmitter implements IBaseEmitter
 {
     private $value;
     private $previous;
-    private $time;
     public $field;
 
+    /**
+     * @param $value
+     * @param $previous
+     */
     public function __construct($value, $previous)
     {
         $this->value = intval($value);
         $this->previous = $previous;
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
-        // do some magic and determine if we are lookign for month, date or year
+        // do some magic and determine if we are looking for month, date or year
         if ($this->value >= 60 && $this->value <= 99) {
             return $this->formatYear($time);
         } elseif ($this->value == 12 && $this->previous && $this->previous->field != 'month') {
@@ -44,6 +51,10 @@ class TwoDigitDate
         }
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     private function formatYear($time)
     {
         $this->field = 'year';
@@ -51,6 +62,10 @@ class TwoDigitDate
         return date("y", $time);
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     private function formatDay($time)
     {
         $this->field = 'day';
@@ -58,6 +73,10 @@ class TwoDigitDate
         return date("d", $time);
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     private function formatMonth($time)
     {
         $this->field = 'month';

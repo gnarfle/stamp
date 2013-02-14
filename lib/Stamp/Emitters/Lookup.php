@@ -5,14 +5,19 @@
 
 namespace Stamp\Emitters;
 
-class Lookup
+class Lookup extends BaseEmitter implements IBaseEmitter
 {
-    private $format;
+    /**
+     * @var string
+     */
     public $field;
 
+    /**
+     * @param $format
+     */
     public function __construct($format)
     {
-        $this->format = $format;
+        parent::__construct($format);
         switch ($format) {
             case 'F':
             case 'M':
@@ -34,6 +39,10 @@ class Lookup
         }
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
         return date($this->format, $time);

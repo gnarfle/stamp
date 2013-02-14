@@ -5,16 +5,25 @@
 
 namespace Stamp\Emitters;
 
-class AmPm
+class AmPm extends BaseEmitter implements IBaseEmitter
 {
-    private $format;
+    /**
+     * @var string
+     */
     public $field = 'meridian';
 
+    /**
+     * @param string $format
+     */
     public function __construct($format = 'lowercase')
     {
-        $this->format = $format;
+        parent::__construct($format);
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
         $am = 'am';

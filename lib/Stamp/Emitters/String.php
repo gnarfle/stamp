@@ -5,16 +5,25 @@
 
 namespace Stamp\Emitters;
 
-class String
+class String extends BaseEmitter implements IBaseEmitter
 {
-    private $format;
+    /**
+     * @var string
+     */
     public $field = 'string';
 
+    /**
+     * @param $format
+     */
     public function __construct($format)
     {
-        $this->format = $format;
+        parent::__construct($format);
     }
 
+    /**
+     * @param $time
+     * @return mixed
+     */
     public function format($time)
     {
         return $this->format;

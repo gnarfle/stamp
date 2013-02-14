@@ -5,19 +5,26 @@
 
 namespace Stamp\Emitters;
 
-class TwoDigitTime
+class TwoDigitTime extends BaseEmitter implements IBaseEmitter
 {
     private $value;
     private $previous;
-    private $time;
     public $field;
 
+    /**
+     * @param $value
+     * @param $previous
+     */
     public function __construct($value, $previous)
     {
         $this->value = intval($value);
         $this->previous = $previous;
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
         if ($this->previous && $this->previous->field == 'hour') {

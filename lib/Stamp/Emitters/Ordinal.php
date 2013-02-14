@@ -5,21 +5,39 @@
 
 namespace Stamp\Emitters;
 
-class Ordinal
+class Ordinal extends BaseEmitter implements IBaseEmitter
 {
+    /**
+     * @var
+     */
     private $value;
+
+    /**
+     * @var string
+     */
     public $field = 'day';
 
+    /**
+     * @param $value
+     */
     public function __construct($value)
     {
         $this->value = $value;
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     public function format($time)
     {
         return $this->ordinalize($time);
     }
 
+    /**
+     * @param $time
+     * @return string
+     */
     private function ordinalize($time)
     {
         /* I'm making the assumption that no one wants 03rd, so we will return no leading zero */
