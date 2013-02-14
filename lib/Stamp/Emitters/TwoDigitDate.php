@@ -7,8 +7,19 @@ namespace Stamp\Emitters;
 
 class TwoDigitDate extends BaseEmitter implements IBaseEmitter
 {
+    /**
+     * @var int
+     */
     private $value;
+
+    /**
+     * @var
+     */
     private $previous;
+
+    /**
+     * @var string
+     */
     public $field;
 
     /**

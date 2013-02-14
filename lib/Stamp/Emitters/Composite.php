@@ -13,6 +13,7 @@ class Composite extends BaseEmitter implements IBaseEmitter
     {
 
     }
+
     /**
      * @param $time
      * @return string
