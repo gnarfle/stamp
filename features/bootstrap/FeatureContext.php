@@ -1,11 +1,6 @@
 <?php
 
-use Behat\Behat\Context\ClosuredContextInterface,
-    Behat\Behat\Context\TranslatedContextInterface,
-    Behat\Behat\Context\BehatContext,
-    Behat\Behat\Exception\PendingException;
-use Behat\Gherkin\Node\PyStringNode,
-    Behat\Gherkin\Node\TableNode;
+use Behat\Behat\Context\BehatContext;
 
 //
 // Require 3rd-party libraries here:
@@ -22,7 +17,6 @@ require __DIR__ . '/../../vendor/autoload.php';
 class FeatureContext extends BehatContext
 {
     private $date;
-    private $stamp;
     private $stamped;
 
     /**
@@ -78,4 +72,3 @@ class FeatureContext extends BehatContext
         $this->date = strtotime("$month $day, $year $hour:$minute:$second");
     }
 }
-
