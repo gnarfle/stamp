@@ -7,7 +7,8 @@ pass to date().
 ## Status
 
 Stamp should be fully functional, it passes all the tests that it's ruby
-cousin does. 
+cousin does. The code needs a bit of cleanup but it is perfectly usable
+as is.
 
 ## Performance
 
