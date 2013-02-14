@@ -1,3 +1,8 @@
 .svn
 .idea
 .DS_Store
+vendor
+composer.phar
+test
+bin
+composer.lock
