@@ -7,16 +7,16 @@ namespace Stamp\Emitters;
 
 class String
 {
-  private $format;
-  public $field = 'string';
+    private $format;
+    public $field = 'string';
 
-  public function __construct($format)
-  {
-    $this->format = $format;
-  }
+    public function __construct($format)
+    {
+        $this->format = $format;
+    }
 
-  public function format($time)
-  {
-    return $this->format;
-  }
+    public function format($time)
+    {
+        return $this->format;
+    }
 }

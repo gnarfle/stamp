@@ -7,28 +7,28 @@ namespace Stamp\Emitters;
 
 class AmPm
 {
-  private $format;
-  public $field = 'meridian';
+    private $format;
+    public $field = 'meridian';
 
-  public function __construct($format = 'lowercase')
-  {
-    $this->format = $format;
-  }
-
-  public function format($time)
-  {
-    $am = 'am';
-    $pm = 'pm';
-
-    if ($this->format == 'uppercase') {
-      $am = 'AM';
-      $pm = 'PM';
+    public function __construct($format = 'lowercase')
+    {
+        $this->format = $format;
     }
 
-    if ( date('G', $time) < 12 ) {
-      return $am;
-    }
+    public function format($time)
+    {
+        $am = 'am';
+        $pm = 'pm';
 
-    return $pm;
-  }
+        if ($this->format == 'uppercase') {
+            $am = 'AM';
+            $pm = 'PM';
+        }
+
+        if (date('G', $time) < 12) {
+            return $am;
+        }
+
+        return $pm;
+    }
 }
